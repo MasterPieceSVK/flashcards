@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   manifest: "/manifest.json",
-  viewport: "initial-scale=1.0 user-scalable=0",
+  viewport: "initial-scale=1.0 user-scalable=no",
   title: "Flashcards",
   description: "Flashcards",
 };
