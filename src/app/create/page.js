@@ -19,10 +19,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import { Toaster } from "@/components/ui/sonner";
 import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
+import info from "../../../info";
 
 export default function Create() {
+  console.log("info + " + info);
   const [questionCount, setQuestionCount] = useState(1);
   const [user, setUser] = useState("");
   const router = useRouter();
@@ -53,7 +56,7 @@ export default function Create() {
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      setName: "Set Name",
+      setName: "",
       ...Array.from({ length: questionCount }, (_, i) => ({
         [`question${i}`]: "",
         [`answer${i}`]: "",
@@ -64,7 +67,7 @@ export default function Create() {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `http://localhost:5000/dashboard`,
+        `${info}/dashboard`,
         { sets: false },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -91,7 +94,7 @@ export default function Create() {
   const createSetMutation = useMutation({
     mutationFn: async (set) => {
       return axios.post(
-        `http://localhost:5000/sets`,
+        `${info}/sets`,
         { set: set },
         {
           headers: { Authorization: `Bearer ${set.token}` },
@@ -99,6 +102,8 @@ export default function Create() {
       );
     },
     onSuccess: () => {
+      toast("Set has been created");
+
       router.push("/dashboard");
     },
     onError: (e) => {

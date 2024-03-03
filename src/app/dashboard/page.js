@@ -19,6 +19,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import info from "../../../info";
 
 export default function Dashboard() {
   const [sets, setSets] = useState([]);
@@ -27,7 +28,7 @@ export default function Dashboard() {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `http://localhost:5000/dashboard`,
+        `${info}/dashboard`,
         { sets: true },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -70,6 +71,7 @@ export default function Dashboard() {
               sets.map((set) => {
                 return (
                   <Card
+                    is_public={set.is_public}
                     setId={set.set_id}
                     likes_count={set.likes_count}
                     set_name={set.set_name}

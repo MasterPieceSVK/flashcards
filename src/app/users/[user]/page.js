@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import info from "../../../../info";
 
 export default function UserPage({ params }) {
   const [user, setUser] = useState("");
@@ -13,7 +14,7 @@ export default function UserPage({ params }) {
     mutationFn: async (auth) => {
       const token = localStorage.getItem("token");
       return axios.post(
-        `http://localhost:5000/users/${auth}`,
+        `${info}/users/${auth}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

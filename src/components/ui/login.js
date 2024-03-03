@@ -25,6 +25,7 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import info from "../../../info";
 require("dotenv").config();
 
 export default function Login() {
@@ -42,7 +43,7 @@ export default function Login() {
   const router = useRouter();
   const loginMutation = useMutation({
     mutationFn: async (user) => {
-      return axios.post("http://localhost:5000/login", user);
+      return axios.post(`${info}/login`, user);
     },
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);

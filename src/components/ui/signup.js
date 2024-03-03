@@ -28,6 +28,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import info from "../../../info";
 
 export default function SignUp() {
   const formSchema = z.object({
@@ -48,7 +49,7 @@ export default function SignUp() {
   const signUpMutation = useMutation({
     mutationFn: async (newUser) => {
       console.log(form.formState);
-      return axios.post(`http://localhost:5000/signup`, newUser);
+      return axios.post(`${info}/signup`, newUser);
     },
     onSuccess: (data) => {
       console.log(data);
