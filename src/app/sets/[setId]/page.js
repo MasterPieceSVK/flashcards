@@ -74,7 +74,7 @@ export default function Sets({ params }) {
         <div className="flex flex-col items-center justify-center gap-5">
           <NoaccessIcon />
           <h1 className="font-bold">
-            Looks like you don't have access to this set
+            Looks like you don&apos;t have access to this set
           </h1>
           <Button asChild>
             <Link href={"/dashboard"}>Go Back</Link>
@@ -96,8 +96,8 @@ export default function Sets({ params }) {
       {visibility && (
         <div className="flex flex-col gap-4 justify-center items-center">
           {data &&
-            data.map((qa) => {
-              return <QuestionCard q={qa.question} a={qa.answer} />;
+            data.map((qa, i) => {
+              return <QuestionCard key={i} q={qa.question} a={qa.answer} />;
             })}
         </div>
       )}

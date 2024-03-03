@@ -7,6 +7,8 @@ import Provider from "../../util/providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  manifest: "/manifest.json",
+
   title: "Flashcards",
   description: "Flashcards",
 };

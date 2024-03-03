@@ -68,9 +68,10 @@ export default function Dashboard() {
           </div>
           <div className="flex flex-col items-center justify-center gap-4">
             {sets.length > 0 ? (
-              sets.map((set) => {
+              sets.map((set, i) => {
                 return (
                   <Card
+                    key={i}
                     is_public={set.is_public}
                     setId={set.set_id}
                     likes_count={set.likes_count}
