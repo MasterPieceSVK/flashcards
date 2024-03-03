@@ -146,6 +146,7 @@ export default function Create() {
   return (
     <div>
       <Nav user={user} />
+      <h1>{localStorage.getItem("token")}</h1>
       <h1 className="text-center font-bold text-3xl mb-4">New set</h1>
       <div className="flex justify-center">
         <div className="xl:w-3/4 w-full">

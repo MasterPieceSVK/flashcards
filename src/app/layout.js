@@ -1,5 +1,4 @@
 import { Inter } from "next/font/google";
-import Head from "next/head";
 import "./globals.css";
 import Nav from "@/components/ui/nav";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,15 +16,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="viewport" content={metadata.viewport} />
-        <style>{`
-          html, body {
-            touch-action: none;
-          }
-        `}</style>
-      </Head>
       <body className={inter.className}>
         <Provider>{children}</Provider>
       </body>
