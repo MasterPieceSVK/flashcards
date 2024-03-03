@@ -10,20 +10,35 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 require("dotenv").config();
 
 export default function Login() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [exists, setExists] = useState(false);
-  const [wrong, setWrong] = useState(false);
-  const [error, setError] = useState(false);
+  const formSchema = z.object({
+    username: z.string(),
+    password: z.string(),
+  });
+  const form = useForm({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
   const router = useRouter();
   const loginMutation = useMutation({
     mutationFn: async (user) => {
@@ -34,36 +49,32 @@ export default function Login() {
       router.push(`/users/${data.data.username}`);
     },
     onError: (e) => {
-      setWrong(false);
-      setError(false);
-      setExists(false);
-
+      console.log(e);
       if (e.request.status == 0) {
-        setError(true);
-      }
-      if (e.response.status == 409) {
-        setExists(true);
-        console.log(e.response.status);
+        form.setError("username", {
+          type: "manual",
+          message: "Network error. Please check your connection.",
+        });
+        form.setError("password", {
+          type: "manual",
+          message: "Network error. Please check your connection.",
+        });
       } else if (e.response.status == 404) {
-        setWrong(true);
-      } else {
-        setError(true);
+        form.setError("username", {
+          type: "manual",
+          message: "Login or password is invalid  ",
+        });
       }
     },
   });
 
-  useEffect(() => {
-    console.log(exists);
-  }, [exists]);
-  async function handleLogin() {
-    if (username && password) {
-      const user = {
-        username,
-        password,
-      };
+  async function handleLogin(values) {
+    const user = {
+      username: values.username,
+      password: values.password,
+    };
 
-      loginMutation.mutate(user);
-    }
+    loginMutation.mutate(user);
   }
 
   return (
@@ -73,60 +84,49 @@ export default function Login() {
           <Button>Login</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Login</DialogTitle>
-            <DialogDescription>Login</DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="username" className="text-right">
-                Username
-              </Label>
-              <Input
-                id="username"
-                placeholder="Mysterious User"
-                className="col-span-3"
-                onChange={(e) => setUsername(e.target.value)}
-                value={username}
-              />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="password" className="text-right">
-                Password
-              </Label>
-              <Input
-                id="password"
-                placeholder="Strong Password ;)"
-                className="col-span-3"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-            </div>
-          </div>
-          {wrong && (
-            <div>
-              <p className="text-red-600 font-bold text-sm text-center">
-                Incorrect username or password
-              </p>
-            </div>
-          )}
-          {error && (
-            <div>
-              <p className="text-red-600 font-bold text-sm text-center">
-                Something went wrong{" "}
-              </p>
-            </div>
-          )}
-          <DialogFooter>
-            <Button
-              type="submit"
-              onClick={handleLogin}
-              disabled={loginMutation.isPending}
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleLogin)}
+              className="space-y-4"
             >
-              Login
-            </Button>
-          </DialogFooter>
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Mysterious User" {...field} />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Strong password ;)"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button disabled={loginMutation.isPending} type="submit">
+                {loginMutation.isPending ? "Loading" : "Login"}
+              </Button>
+            </form>
+          </Form>
         </DialogContent>
       </Dialog>
     </div>

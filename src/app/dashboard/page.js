@@ -60,13 +60,20 @@ export default function Dashboard() {
       ) : (
         <div>
           <Nav user={user} />
-          <Button onClick={() => router.push("/create")}>Create New Set</Button>
+          <div className="flex justify-end mb-9 w-3/4">
+            <Button onClick={() => router.push("/create")}>
+              <p className="font-bold ">Create New Set</p>
+            </Button>
+          </div>
           <div className="flex flex-col items-center justify-center gap-4">
             {sets.length > 0 ? (
               sets.map((set) => {
-                console.log(set);
                 return (
-                  <Card likes_count={set.likes_count} set_name={set.set_name} />
+                  <Card
+                    setId={set.set_id}
+                    likes_count={set.likes_count}
+                    set_name={set.set_name}
+                  />
                 );
               })
             ) : (

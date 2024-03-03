@@ -21,10 +21,13 @@ export default function UserPage({ params }) {
       );
     },
     onSuccess: (data) => {
+      console.log(data);
       setUser(data.data.username);
       setAuthenticated(true);
     },
-    onError: () => {
+    onError: (e) => {
+      console.log(e);
+
       setAuthenticated(false);
     },
   });
