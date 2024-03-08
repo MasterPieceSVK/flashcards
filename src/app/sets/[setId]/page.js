@@ -8,12 +8,16 @@ import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import info from "../../../../info";
+import SetContent from "@/components/ui/setContent";
+import Play from "@/components/ui/play";
 
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
   const [auth, setAuth] = useState(false);
   const [grabbedData, setGrabbedData] = useState(true);
   const [visibility, setVisibility] = useState(false);
+  const [isPlay, setIsPlay] = useState(false);
+
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
@@ -33,9 +37,9 @@ export default function Sets({ params }) {
       console.log(e);
     },
   });
-  const token = localStorage.getItem("token");
-
+  let token = "";
   useEffect(() => {
+    token = localStorage.getItem("token");
     // console.log(token);
     authMutation.mutate(token);
   }, []);
@@ -69,42 +73,51 @@ export default function Sets({ params }) {
   }, [auth]);
 
   function handlePlay() {
-    console.log("play");
+    setIsPlay(true);
   }
   return (
     <div>
       <Nav user={user} />
-      {!grabbedData ? (
-        <div className="flex flex-col items-center justify-center gap-5">
-          <NoaccessIcon />
-          <h1 className="font-bold">
-            Looks like you don&apos;t have access to this set
-          </h1>
-          <Button asChild>
-            <Link href={"/dashboard"}>Go Back</Link>
-          </Button>
+      {!isPlay ? (
+        <div>
+          {!grabbedData ? (
+            <div className="flex flex-col items-center justify-center gap-5">
+              <NoaccessIcon />
+              <h1 className="font-bold">
+                Looks like you don&apos;t have access to this set
+              </h1>
+              <Button asChild>
+                <Link href={"/dashboard"}>Go Back</Link>
+              </Button>
+            </div>
+          ) : (
+            <div className="flex gap-4 flex-col mb-5 items-center">
+              <SetContent length={grabbedData.length} />
+              <div className="flex gap-4 justify-center mb-5">
+                <Button
+                  onClick={() =>
+                    visibility ? setVisibility(false) : setVisibility(true)
+                  }
+                >
+                  Show Questions and Answers
+                </Button>
+                <Button onClick={handlePlay}>Play</Button>
+              </div>
+            </div>
+          )}
+
+          {visibility && (
+            <div className="flex flex-col gap-4 justify-center items-center">
+              {grabbedData &&
+                grabbedData.map((qa, i) => {
+                  console.log(qa);
+                  return <QuestionCard key={i} q={qa.question} a={qa.answer} />;
+                })}
+            </div>
+          )}
         </div>
       ) : (
-        <div className="flex gap-4 justify-center mb-5">
-          <Button
-            onClick={() =>
-              visibility ? setVisibility(false) : setVisibility(true)
-            }
-          >
-            Show FlashCards
-          </Button>
-          <Button onClick={handlePlay}>Play</Button>
-        </div>
-      )}
-
-      {visibility && (
-        <div className="flex flex-col gap-4 justify-center items-center">
-          {grabbedData &&
-            grabbedData.map((qa, i) => {
-              console.log(qa);
-              return <QuestionCard key={i} q={qa.question} a={qa.answer} />;
-            })}
-        </div>
+        <Play set={grabbedData} setId={params.setId} />
       )}
     </div>
   );
