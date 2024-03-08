@@ -9,7 +9,7 @@ import info from "../../../../info";
 export default function UserPage({ params }) {
   const [user, setUser] = useState("");
   const router = useRouter();
-  const [authenticated, setAuthenticated] = useState(false);
+  const [authenticated, setAuthenticated] = useState(true);
   const authMutation = useMutation({
     mutationFn: async (auth) => {
       const token = localStorage.getItem("token");
@@ -37,9 +37,7 @@ export default function UserPage({ params }) {
     authMutation.mutate(params.user);
   }, []);
 
-  return authMutation.isPending ? (
-    <p>loading</p>
-  ) : authenticated ? (
+  return authenticated ? (
     <div>
       <Nav user={user} />
       <p className="text-3xl">{params.user}</p>

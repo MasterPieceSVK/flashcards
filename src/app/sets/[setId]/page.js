@@ -12,7 +12,7 @@ import info from "../../../../info";
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
   const [auth, setAuth] = useState(false);
-  const [grabbedData, setGrabbedData] = useState();
+  const [grabbedData, setGrabbedData] = useState(true);
   const [visibility, setVisibility] = useState(false);
   const authMutation = useMutation({
     mutationFn: async (token) => {

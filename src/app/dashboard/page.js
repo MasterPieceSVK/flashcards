@@ -24,6 +24,7 @@ import info from "../../../info";
 export default function Dashboard() {
   const [sets, setSets] = useState([]);
   const [user, setUser] = useState("");
+  const [noSets, setNoSets] = useState(false);
   const router = useRouter();
   const authMutation = useMutation({
     mutationFn: async (token) => {
@@ -36,7 +37,12 @@ export default function Dashboard() {
       );
     },
     onSuccess: (data) => {
-      setSets(data.data.sets);
+      if (data.data.sets?.length) {
+        setNoSets(false);
+        setSets(data.data.sets);
+      } else {
+        setNoSets(true);
+      }
       setUser(data.data.username);
     },
     onError: () => {
@@ -55,9 +61,8 @@ export default function Dashboard() {
   }, [sets]);
   return (
     <div>
-      {authMutation.isError && <h1>An error happened</h1>}
-      {authMutation.isPending ? (
-        <h1>Loading...</h1>
+      {authMutation.isError ? (
+        <h1>An error happened</h1>
       ) : (
         <div>
           <Nav user={user} />
@@ -67,7 +72,7 @@ export default function Dashboard() {
             </Button>
           </div>
           <div className="flex flex-col items-center justify-center gap-4">
-            {sets.length > 0 ? (
+            {!noSets ? (
               sets.map((set, i) => {
                 return (
                   <Card
