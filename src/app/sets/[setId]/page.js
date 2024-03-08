@@ -52,8 +52,12 @@ export default function Sets({ params }) {
     },
     onSuccess: (data) => {
       if (data.data == "") {
+        console.log("succes printing data 0 ");
+        console.log(data);
         setData(false);
       } else {
+        console.log("succes printing data 1 ");
+        console.log(data);
         setData(data.data);
       }
     },
