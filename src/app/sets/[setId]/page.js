@@ -12,7 +12,7 @@ import info from "../../../../info";
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
   const [auth, setAuth] = useState(false);
-  const [data, setData] = useState();
+  const [grabbedData, setGrabbedData] = useState();
   const [visibility, setVisibility] = useState(false);
   const authMutation = useMutation({
     mutationFn: async (token) => {
@@ -25,7 +25,7 @@ export default function Sets({ params }) {
       );
     },
     onSuccess: (data) => {
-      console.log(data.data.username);
+      // console.log(data.data.username);
       setUser(data.data.username);
       setAuth(true);
     },
@@ -36,29 +36,29 @@ export default function Sets({ params }) {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    console.log(token);
+    // console.log(token);
     authMutation.mutate(token);
   }, []);
 
   const qaMutation = useMutation({
     mutationFn: async (setId) => {
       setId = params.setId;
-      console.log(setId);
+      // console.log(setId);
       return axios.post(
-        `http://localhost:5000/qa/${setId}`,
+        `${info}/qa/${setId}`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
     },
     onSuccess: (data) => {
       if (data.data == "") {
-        console.log("succes printing data 0 ");
-        console.log(data);
-        setData(false);
+        // console.log("succes printing data 0 ");
+        // console.log(data);
+        setGrabbedData(false);
       } else {
-        console.log("succes printing data 1 ");
-        console.log(data);
-        setData(data.data);
+        // console.log("succes printing data 1 ");
+        // console.log(data);
+        setGrabbedData(data.data);
       }
     },
     onError: (e) => console.log(e),
@@ -74,7 +74,7 @@ export default function Sets({ params }) {
   return (
     <div>
       <Nav user={user} />
-      {!data ? (
+      {!grabbedData ? (
         <div className="flex flex-col items-center justify-center gap-5">
           <NoaccessIcon />
           <h1 className="font-bold">
@@ -99,8 +99,9 @@ export default function Sets({ params }) {
 
       {visibility && (
         <div className="flex flex-col gap-4 justify-center items-center">
-          {data &&
-            data.map((qa, i) => {
+          {grabbedData &&
+            grabbedData.map((qa, i) => {
+              console.log(qa);
               return <QuestionCard key={i} q={qa.question} a={qa.answer} />;
             })}
         </div>
