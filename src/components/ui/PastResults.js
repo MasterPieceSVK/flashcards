@@ -27,7 +27,7 @@ export default function PastResults({ results }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {results.map((result) => {
+          {results.map((result, i) => {
             let percentage = 0;
             if (result.right_answers > 0 || result.wrong_answers > 0) {
               percentage =
@@ -39,7 +39,7 @@ export default function PastResults({ results }) {
                 : percentage.toFixed(2);
             }
             return (
-              <TableRow>
+              <TableRow key={i}>
                 <TableCell className="text-center">
                   {result.right_answers}
                 </TableCell>
