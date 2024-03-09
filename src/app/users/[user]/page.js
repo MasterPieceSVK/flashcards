@@ -65,7 +65,7 @@ export default function UserPage({ params }) {
   return authenticated ? (
     <div>
       <Nav user={user} />
-      <UserInfo info={userInfo} />
+      {userInfo && <UserInfo info={userInfo} />}
     </div>
   ) : (
     <p>No rights to access this account </p>

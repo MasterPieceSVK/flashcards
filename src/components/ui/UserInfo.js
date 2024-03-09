@@ -1,4 +1,5 @@
 export default function UserInfo({ info }) {
+  console.log(info);
   return (
     <div className="bg-primary">
       <div>
