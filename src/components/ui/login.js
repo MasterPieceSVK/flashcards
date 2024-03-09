@@ -47,7 +47,7 @@ export default function Login() {
     },
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);
-      router.push(`/users/${data.data.username}`);
+      router.push(`/dashboard`);
     },
     onError: (e) => {
       console.log(e);

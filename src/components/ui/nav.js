@@ -24,11 +24,15 @@ export default function Nav({ user }) {
 
   return (
     <div className="flex justify-between items-center py-4 px-4 flex-wrap bg-primary mb-8 h-[10vh]">
-      <div className="flex-grow text-center">
+      <div className="flex-grow flex text-center justify-center gap-2">
         <Link href="/dashboard" legacyBehavior passHref>
           <Button variant="secondary">Dashboard</Button>
         </Link>
+        <Link href="/browse" legacyBehavior passHref>
+          <Button variant="secondary">Browse</Button>
+        </Link>
       </div>
+
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger>

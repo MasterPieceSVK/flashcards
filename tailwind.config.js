@@ -10,6 +10,9 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+    fontFamily: {
+      inknut: ["inknut-antiqua"],
+    },
     container: {
       center: true,
       padding: "2rem",

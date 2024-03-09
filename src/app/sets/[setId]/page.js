@@ -14,6 +14,7 @@ import PlayIcon from "@/components/ui/PlayIcon";
 import PastResults from "@/components/ui/PastResults";
 import EmptyHeartIcon from "@/components/ui/emptyHeart";
 import FullHeartIcon from "@/components/ui/FullHeart";
+import InitNav from "@/components/ui/initnav";
 
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
@@ -23,6 +24,8 @@ export default function Sets({ params }) {
   const [isPlay, setIsPlay] = useState(false);
   const [error, setError] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [settled, setSettled] = useState(false);
+  const [authInitToken, setAuthInitToken] = useState();
 
   const authMutation = useMutation({
     mutationFn: async (token) => {
@@ -80,6 +83,9 @@ export default function Sets({ params }) {
       setError(true);
       console.log(e);
     },
+    onSettled: () => {
+      setSettled(true);
+    },
   });
 
   useEffect(() => {
@@ -136,22 +142,40 @@ export default function Sets({ params }) {
 
     likeMutation.mutate(newLike);
   }
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setAuthInitToken(token);
+  }, []);
+
   return (
     <div>
-      <Nav user={user} />
+      {authInitToken ? <Nav user={user} /> : <InitNav />}
       {!error ? (
         !isPlay ? (
           <div>
             {!grabbedData.qa ? (
-              <div className="flex flex-col items-center justify-center gap-5">
-                <NoaccessIcon />
-                <h1 className="font-bold">
-                  Looks like you don&apos;t have access to this set
-                </h1>
-                <Button asChild>
-                  <Link href={"/dashboard"}>Go Back</Link>
-                </Button>
-              </div>
+              authInitToken ? (
+                <div className="flex flex-col items-center justify-center gap-5">
+                  <NoaccessIcon />
+                  <h1 className="font-bold">
+                    Looks like you don&apos;t have access to this set
+                  </h1>
+                  <Button asChild>
+                    <Link href={"/dashboard"}>Go Back</Link>
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center gap-5">
+                  <NoaccessIcon />
+                  <h1 className="font-bold">
+                    Please create an account to access this content
+                  </h1>
+                  <Button asChild>
+                    <Link href={"/dashboard"}>Go Back</Link>
+                  </Button>
+                </div>
+              )
             ) : (
               <div className="flex gap-4 flex-col mb-5 items-center">
                 <SetContent content={grabbedData} />
@@ -165,11 +189,17 @@ export default function Sets({ params }) {
                     Show All Q & A
                   </Button>
                   {liked ? (
-                    <Button onClick={handleUnlike}>
+                    <Button
+                      onClick={handleUnlike}
+                      disabled={qaMutation.isPending}
+                    >
                       <FullHeartIcon />
                     </Button>
                   ) : (
-                    <Button onClick={handleLike}>
+                    <Button
+                      onClick={handleLike}
+                      disabled={qaMutation.isPending}
+                    >
                       <EmptyHeartIcon />{" "}
                     </Button>
                   )}
