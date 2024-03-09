@@ -24,7 +24,7 @@ export default function PlayCard({
   return !end ? (
     <div className="h-1/2 bg-primary flex justify-center flex-col text-center p-4 w-3/4 rounded-lg min-w-fit">
       <div className="flex justify-between gap-1">
-        <Button
+        {/* <Button
           className="bg-blue-500 text-white hover:bg-blue-900 gap-2 "
           onClick={() =>
             setCurrentCard(() => {
@@ -57,7 +57,10 @@ export default function PlayCard({
         >
           Next Question
           <NextIcon />
-        </Button>
+        </Button> */}
+        <h1 className="font-bold text-xl">
+          {currentCard + 1} of {set.length}
+        </h1>
       </div>
       {!reveal ? (
         <h1 className="mb-11 mt-11 font-bold text-4xl text-center">

@@ -3,6 +3,7 @@ import { Button } from "./button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import info from "../../../info";
+import Link from "next/link";
 
 export default function Result({ right, wrong, setId }) {
   const [saved, setSaved] = useState(false);
@@ -72,16 +73,32 @@ export default function Result({ right, wrong, setId }) {
           {percentage}%
         </h1>
         <h1 className="text-white font-bold text-2xl sm:text-3xl md:text-5xl">
-          Acurracy
+          Accuracy
         </h1>
       </div>
       <Button
-        className="bg-black text-white text-2xl p-6 hover:bg-green-500"
+        className={`bg-black ${
+          saveMutation.isPaused
+            ? "text-red-200 font-bold text-xl"
+            : "text-white text-2xl"
+        }  p-6 hover:bg-green-500 `}
         onClick={handleSave}
         disabled={saved}
       >
-        {!saved ? "Save Results" : "Saved"}
+        {saveMutation.isPaused
+          ? "No connection to the internet, trying to reconnect..."
+          : !saved
+          ? "Save Results"
+          : "Saved"}
       </Button>
+      {saved && (
+        <Button
+          className=" text-xl bg-black text-white p-6 hover:bg-green-500 "
+          onClick={() => location.reload()}
+        >
+          Go back
+        </Button>
+      )}
     </div>
   );
 }

@@ -10,6 +10,10 @@ import { useEffect, useState } from "react";
 import info from "../../../../info";
 import SetContent from "@/components/ui/setContent";
 import Play from "@/components/ui/play";
+import PlayIcon from "@/components/ui/PlayIcon";
+import PastResults from "@/components/ui/PastResults";
+import EmptyHeartIcon from "@/components/ui/emptyHeart";
+import FullHeartIcon from "@/components/ui/FullHeart";
 
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
@@ -18,6 +22,8 @@ export default function Sets({ params }) {
   const [visibility, setVisibility] = useState(false);
   const [isPlay, setIsPlay] = useState(false);
   const [error, setError] = useState(false);
+  const [liked, setLiked] = useState(false);
+
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
@@ -67,6 +73,7 @@ export default function Sets({ params }) {
         // console.log("succes printing data 1 ");
         // console.log(data);
         setGrabbedData(data.data);
+        setLiked(data.data.liked);
       }
     },
     onError: (e) => {
@@ -84,6 +91,50 @@ export default function Sets({ params }) {
 
   function handlePlay() {
     setIsPlay(true);
+  }
+
+  const likeMutation = useMutation({
+    mutationFn: async (newLike) => {
+      return axios.post(
+        `${info}/like`,
+        { setId: newLike.setId, like: newLike.like },
+        { headers: { Authorization: `Bearer ${newLike.token}` } }
+      );
+    },
+    onSuccess: (data) => {
+      if (data.data.like) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  function handleLike() {
+    const setId = params.setId;
+    const token = localStorage.getItem("token");
+    const newLike = {
+      setId,
+      token,
+      like: true,
+    };
+    grabbedData.likes_count = grabbedData.likes_count + 1;
+    likeMutation.mutate(newLike);
+  }
+  function handleUnlike() {
+    const setId = params.setId;
+    const token = localStorage.getItem("token");
+    const newLike = {
+      setId,
+      token,
+      like: false,
+    };
+    grabbedData.likes_count = grabbedData.likes_count - 1;
+
+    likeMutation.mutate(newLike);
   }
   return (
     <div>
@@ -111,11 +162,29 @@ export default function Sets({ params }) {
                       visibility ? setVisibility(false) : setVisibility(true)
                     }
                   >
-                    Show Questions and Answers
+                    Show All Q & A
                   </Button>
+                  {liked ? (
+                    <Button onClick={handleUnlike}>
+                      <FullHeartIcon />
+                    </Button>
+                  ) : (
+                    <Button onClick={handleLike}>
+                      <EmptyHeartIcon />{" "}
+                    </Button>
+                  )}
                   <Button disabled={qaMutation.isPending} onClick={handlePlay}>
-                    Play
+                    <PlayIcon />
                   </Button>
+                </div>
+                <div className="w-3/4">
+                  {grabbedData.allResults?.length >= 0 ? (
+                    <PastResults results={grabbedData.allResults} />
+                  ) : (
+                    <h1 className="text-center font-semibold">
+                      You haven&apos;t played this set yet. <br></br> Click play
+                    </h1>
+                  )}
                 </div>
               </div>
             )}

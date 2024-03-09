@@ -3,23 +3,14 @@ import { Button } from "@/components/ui/button";
 import Card from "@/components/ui/card";
 
 import Nav from "@/components/ui/nav";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu";
+
 import NoSets from "@/components/ui/noSets";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import info from "../../../info";
+import { Plus } from "lucide-react";
 
 export default function Dashboard() {
   const [sets, setSets] = useState([]);
@@ -68,7 +59,8 @@ export default function Dashboard() {
           <Nav user={user} />
           <div className="flex justify-end mb-9 w-3/4">
             <Button onClick={() => router.push("/create")}>
-              <p className="font-bold ">Create New Set</p>
+              <Plus />
+              <p className="font-bold ml-2 ">New Set</p>
             </Button>
           </div>
           <div className="flex flex-col items-center justify-center gap-4">
