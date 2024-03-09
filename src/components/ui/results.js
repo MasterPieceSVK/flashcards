@@ -39,10 +39,13 @@ export default function Result({ right, wrong, setId }) {
     };
     saveMutation.mutate(newSave);
   }
-  let percentage = (right / (right + wrong)) * 100;
-  percentage = Number.isInteger(percentage)
-    ? percentage
-    : percentage.toFixed(2);
+  let percentage = 0;
+  if (right > 0 || wrong > 0) {
+    percentage = (right / (right + wrong)) * 100;
+    percentage = Number.isInteger(percentage)
+      ? percentage
+      : percentage.toFixed(2);
+  }
   return (
     <div className="h-1/2 bg-primary flex flex-col justify-center gap-2 md:gap-4 text-center p-4 w-3/4 rounded-lg min-w-fit">
       <h1 className="text-3xl font-semibold">Your score:</h1>
