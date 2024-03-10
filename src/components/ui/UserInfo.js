@@ -1,4 +1,7 @@
+import { DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "./button";
+import { Dialog } from "./dialog";
+import EditAccount from "./EditAccount";
 
 export default function UserInfo({ info }) {
   console.log(info);
@@ -15,12 +18,7 @@ export default function UserInfo({ info }) {
           <strong>Email: </strong>
           <br></br> {info.email}
         </p>
-
-        <Button className="bg-white  ">
-          <h1 class=" font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-500">
-            Edit Account Details
-          </h1>
-        </Button>
+        <EditAccount />
       </div>
 
       <div className="w-full flex justify-center flex-col items-center">
