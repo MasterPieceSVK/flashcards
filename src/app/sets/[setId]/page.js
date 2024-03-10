@@ -15,6 +15,8 @@ import PastResults from "@/components/ui/PastResults";
 import EmptyHeartIcon from "@/components/ui/emptyHeart";
 import FullHeartIcon from "@/components/ui/FullHeart";
 import InitNav from "@/components/ui/initnav";
+import { Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Sets({ params }) {
   const [user, setUser] = useState("");
@@ -26,7 +28,7 @@ export default function Sets({ params }) {
   const [liked, setLiked] = useState(false);
   const [settled, setSettled] = useState(false);
   const [authInitToken, setAuthInitToken] = useState();
-
+  const router = useRouter();
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
@@ -148,6 +150,27 @@ export default function Sets({ params }) {
     setAuthInitToken(token);
   }, []);
 
+  const deleteMutation = useMutation({
+    mutationFn: async (setId) => {
+      const token = localStorage.getItem("token");
+
+      return axios.delete(`${info}/sets`, {
+        params: { setId },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    },
+    onSuccess: () => {
+      router.push("/dashboard");
+    },
+    onError: (e) => {
+      console.log(e);
+    },
+  });
+
+  function handleDelete() {
+    deleteMutation.mutate(params.setId);
+  }
+
   return (
     <div>
       {authInitToken ? <Nav user={user} /> : <InitNav />}
@@ -180,6 +203,11 @@ export default function Sets({ params }) {
               <div className="flex gap-4 flex-col mb-5 items-center">
                 <SetContent content={grabbedData} />
                 <div className="flex gap-4 justify-center mb-5">
+                  {user == grabbedData.username && (
+                    <Button variant="destructive" onClick={handleDelete}>
+                      <Trash2 />
+                    </Button>
+                  )}
                   <Button
                     disabled={qaMutation.isPending}
                     onClick={() =>
