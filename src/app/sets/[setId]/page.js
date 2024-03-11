@@ -57,6 +57,11 @@ export default function Sets({ params }) {
 
   const qaMutation = useMutation({
     mutationFn: async (authToken) => {
+      console.log(qaMutation.isPending);
+      console.log(qaMutation.isIdle);
+      console.log(qaMutation.isError);
+      console.log(qaMutation.isSuccess);
+
       const setId = Number(params.setId);
       if (Number.isInteger(setId)) {
         return axios.post(
@@ -70,6 +75,10 @@ export default function Sets({ params }) {
     },
     onSuccess: (data) => {
       setError(false);
+      console.log(qaMutation.isPending);
+      console.log(qaMutation.isIdle);
+      console.log(qaMutation.isError);
+      console.log(qaMutation.isSuccess);
       if (data.data == "") {
         // console.log("succes printing data 0 ");
         // console.log(data);
@@ -86,6 +95,10 @@ export default function Sets({ params }) {
       console.log(e);
     },
     onSettled: () => {
+      console.log(qaMutation.isPending);
+      console.log(qaMutation.isIdle);
+      console.log(qaMutation.isError);
+      console.log(qaMutation.isSuccess);
       setSettled(true);
     },
   });
@@ -177,7 +190,9 @@ export default function Sets({ params }) {
       {!error ? (
         !isPlay ? (
           <div>
-            {!grabbedData.qa ? (
+            {qaMutation.isPending == false &&
+            qaMutation.isIdle == false &&
+            !grabbedData.qa ? (
               authInitToken ? (
                 <div className="flex flex-col items-center justify-center gap-5">
                   <NoaccessIcon />
@@ -200,51 +215,58 @@ export default function Sets({ params }) {
                 </div>
               )
             ) : (
-              <div className="flex gap-4 flex-col mb-5 items-center">
-                <SetContent content={grabbedData} />
-                <div className="flex gap-4 justify-center mb-5">
-                  {user == grabbedData.username && (
-                    <Button variant="destructive" onClick={handleDelete}>
-                      <Trash2 />
-                    </Button>
-                  )}
-                  <Button
-                    disabled={qaMutation.isPending}
-                    onClick={() =>
-                      visibility ? setVisibility(false) : setVisibility(true)
-                    }
-                  >
-                    Show All Q & A
-                  </Button>
-                  {liked ? (
+              qaMutation.isPending == false &&
+              qaMutation.isIdle == false && (
+                <div className="flex gap-4 flex-col mb-5 items-center">
+                  <SetContent content={grabbedData} />
+                  <div className="flex gap-4 justify-center mb-5">
+                    {user == grabbedData.username && (
+                      <Button variant="destructive" onClick={handleDelete}>
+                        <Trash2 />
+                      </Button>
+                    )}
                     <Button
-                      onClick={handleUnlike}
                       disabled={qaMutation.isPending}
+                      onClick={() =>
+                        visibility ? setVisibility(false) : setVisibility(true)
+                      }
                     >
-                      <FullHeartIcon />
+                      Show All Q & A
                     </Button>
-                  ) : (
+                    {liked ? (
+                      <Button
+                        onClick={handleUnlike}
+                        disabled={qaMutation.isPending}
+                      >
+                        <FullHeartIcon />
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleLike}
+                        disabled={qaMutation.isPending}
+                      >
+                        <EmptyHeartIcon />{" "}
+                      </Button>
+                    )}
                     <Button
-                      onClick={handleLike}
                       disabled={qaMutation.isPending}
+                      onClick={handlePlay}
                     >
-                      <EmptyHeartIcon />{" "}
+                      <PlayIcon />
                     </Button>
-                  )}
-                  <Button disabled={qaMutation.isPending} onClick={handlePlay}>
-                    <PlayIcon />
-                  </Button>
+                  </div>
+                  <div className="w-3/4">
+                    {grabbedData.allResults?.length >= 0 ? (
+                      <PastResults results={grabbedData.allResults} />
+                    ) : (
+                      <h1 className="text-center font-semibold">
+                        You haven&apos;t played this set yet. <br></br> Click
+                        play
+                      </h1>
+                    )}
+                  </div>
                 </div>
-                <div className="w-3/4">
-                  {grabbedData.allResults?.length >= 0 ? (
-                    <PastResults results={grabbedData.allResults} />
-                  ) : (
-                    <h1 className="text-center font-semibold">
-                      You haven&apos;t played this set yet. <br></br> Click play
-                    </h1>
-                  )}
-                </div>
-              </div>
+              )
             )}
 
             {visibility && (

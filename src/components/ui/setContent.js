@@ -33,7 +33,7 @@ export default function SetContent({ content }) {
       </div>
       <div className="flex justify-center items-center flex-col gap-3 mt-6">
         <p># of questions:</p>
-        {content.qa.length ? (
+        {content.qa?.length ? (
           <p className="font-extrabold text-3xl">{content.qa.length}</p>
         ) : (
           <LoadingDots />
