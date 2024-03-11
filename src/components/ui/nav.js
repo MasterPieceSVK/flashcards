@@ -1,5 +1,3 @@
-"use client";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,7 +12,6 @@ import Link from "next/link";
 import { Button } from "./button";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "lucide-react";
-import { useEffect } from "react";
 export default function Nav({ user }) {
   const router = useRouter();
   function handleLogOut() {

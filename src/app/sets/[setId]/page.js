@@ -190,9 +190,7 @@ export default function Sets({ params }) {
       {!error ? (
         !isPlay ? (
           <div>
-            {qaMutation.isPending == false &&
-            qaMutation.isIdle == false &&
-            !grabbedData.qa ? (
+            {!qaMutation.isPending && !qaMutation.isIdle && !grabbedData.qa ? (
               authInitToken ? (
                 <div className="flex flex-col items-center justify-center gap-5">
                   <NoaccessIcon />
@@ -215,8 +213,8 @@ export default function Sets({ params }) {
                 </div>
               )
             ) : (
-              qaMutation.isPending == false &&
-              qaMutation.isIdle == false && (
+              !qaMutation.isPending &&
+              !qaMutation.isIdle && (
                 <div className="flex gap-4 flex-col mb-5 items-center">
                   <SetContent content={grabbedData} />
                   <div className="flex gap-4 justify-center mb-5">
