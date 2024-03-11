@@ -6,20 +6,26 @@ export default function RecentSets({ recentSets }) {
   const [viewMore, setViewMore] = useState(false);
 
   return (
-    <div className="bg-primary rounded-lg ">
-      <h1 className="font-inknut text-3xl text-center pt-5">
-        Most Recent Sets
-      </h1>
-      <div className="bg-primary flex flex-wrap gap-3 p-9">
-        {recentSets.map((set, i) => {
-          if (!viewMore) {
-            if (i < 6) {
+    <div className="bg-primary rounded-lg md:w-1/2 md:mr-3">
+      <div className="flex justify-center mt-5">
+        <div className=" bg-gradient-to-r from-black via-purple-600 to-black w-fit rounded-xl">
+          <h1 className="font-bold text-gray-200   text-4xl text-center p-5 ">
+            Most Recent Sets
+          </h1>
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <div className="bg-black 3xl:bg-primary 3xl:w-full rounded-3xl w-11/12  mt-2 flex flex-col  gap-3 p-9">
+          {recentSets.map((set, i) => {
+            if (!viewMore) {
+              if (i < 6) {
+                return <SetCard content={set} key={i} />;
+              }
+            } else {
               return <SetCard content={set} key={i} />;
             }
-          } else {
-            return <SetCard content={set} key={i} />;
-          }
-        })}
+          })}
+        </div>
       </div>
       <div className="flex justify-center p-6">
         <Button

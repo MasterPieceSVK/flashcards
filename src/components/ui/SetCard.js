@@ -11,27 +11,31 @@ export default function SetCard({ content }) {
   let formattedDate = `${day}.${month}.${year}`;
 
   return (
-    <div className="flex flex-grow flex-shrink">
-      <Link href={`/sets/${content.set_id}`}>
-        <div className="bg-white  p-5 rounded-lg flex flex-col justify-center  gap-2">
-          <div className="flex gap-3 items-center justify-center ">
-            <UserIcon />
-            <p>{content.username}</p>
-          </div>
+    <div className="flex items-center justify-center">
+      <div className="w-full 3xl:w-3/4 3xl:w-1/2">
+        <Link href={`/sets/${content.set_id}`}>
+          <div className="bg-white  rounded-lg flex flex-col justify-center  gap-2 p-6 ">
+            <div className="flex gap-3 items-center justify-center ">
+              <UserIcon />
+              <p className="text-wrap">{content.username}</p>
+            </div>
 
-          <div className="flex justify-center">
-            <p className="text-2xl font-inknut">{content.set_name}</p>
+            <div className="flex justify-center">
+              <p className="text-2xl font-inknut text-wrap">
+                {content.set_name}
+              </p>
+            </div>
+            <div className="flex gap-3 items-center">
+              <PencilIcon />
+              <p>{formattedDate}</p>
+            </div>
+            <div className="flex gap-3 items-center ">
+              <LikeIcon />
+              <p>{content.likes_count}</p>
+            </div>
           </div>
-          <div className="flex gap-3 items-center">
-            <PencilIcon />
-            <p>{formattedDate}</p>
-          </div>
-          <div className="flex gap-3 items-center ">
-            <LikeIcon />
-            <p>{content.likes_count}</p>
-          </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </div>
   );
 }
