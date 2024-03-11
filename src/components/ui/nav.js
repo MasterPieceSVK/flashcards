@@ -20,7 +20,7 @@ export default function Nav({ user }) {
   }
 
   return (
-    <div className="flex justify-between items-center py-4 px-4 flex-wrap bg-primary mb-8 h-[10vh]">
+    <div className="flex justify-between items-center py-4 px-4  bg-primary mb-8 h-[10vh]">
       <div className="flex-grow flex text-center justify-center gap-2">
         <Link href="/dashboard" legacyBehavior passHref>
           <Button variant="secondary">Dashboard</Button>
@@ -36,8 +36,7 @@ export default function Nav({ user }) {
             <Button variant="secondary" className="h-max" asChild>
               <div>
                 <Avatar>
-                  <AvatarImage src="" />
-                  <AvatarFallback className="bg-black text-white">
+                  <AvatarFallback className="bg-gradient-to-r from-blue-500 to-purple-500 text-white ">
                     {user[0] + user[1]}
                   </AvatarFallback>
                 </Avatar>
