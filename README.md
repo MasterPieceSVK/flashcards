@@ -1,6 +1,6 @@
 ## .env.local
 
-The env file with the backend base url
+The env.local file in the root directory with the backend base url
 
 ```bash
 NEXT_PUBLIC_BASEURL=https://flashcards-backend-hl8y.onrender.com
