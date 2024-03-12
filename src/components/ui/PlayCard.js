@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "./button";
-import PreviousIcon from "./previousIcon";
-import NextIcon from "./nextIcon";
+
 import Result from "./results";
 
 export default function PlayCard({
@@ -13,7 +12,6 @@ export default function PlayCard({
   setId,
 }) {
   const [currentCard, setCurrentCard] = useState(0);
-  const [start, setStart] = useState(false);
   const [end, setEnd] = useState(false);
 
   useEffect(() => {
@@ -24,40 +22,6 @@ export default function PlayCard({
   return !end ? (
     <div className="h-1/2 bg-primary flex justify-center flex-col text-center p-4 w-3/4 rounded-lg min-w-fit">
       <div className="flex justify-between gap-1">
-        {/* <Button
-          className="bg-blue-500 text-white hover:bg-blue-900 gap-2 "
-          onClick={() =>
-            setCurrentCard(() => {
-              if (currentCard - 1 >= 0) {
-                setStart(false);
-                return currentCard - 1;
-              } else {
-                setStart(true);
-                return currentCard;
-              }
-            })
-          }
-        >
-          <PreviousIcon />
-          Previous Question
-        </Button>
-        <Button
-          className="bg-blue-500 text-white hover:bg-blue-900 gap-2"
-          onClick={() =>
-            setCurrentCard((currentCard) => {
-              if (currentCard + 1 < set.length) {
-                setEnd(false);
-                return currentCard + 1;
-              } else {
-                setEnd(true);
-                return currentCard; // return currentCard instead of incrementing it
-              }
-            })
-          }
-        >
-          Next Question
-          <NextIcon />
-        </Button> */}
         <h1 className="font-bold text-xl">
           {currentCard + 1} of {set.length}
         </h1>
@@ -91,7 +55,7 @@ export default function PlayCard({
                       return currentCard + 1;
                     } else {
                       setEnd(true);
-                      return currentCard; // return currentCard instead of incrementing it
+                      return currentCard;
                     }
                   });
                   setRight(() => right + 1);
@@ -108,7 +72,7 @@ export default function PlayCard({
                       return currentCard + 1;
                     } else {
                       setEnd(true);
-                      return currentCard; // return currentCard instead of incrementing it
+                      return currentCard;
                     }
                   });
                   setWrong(() => wrong + 1);

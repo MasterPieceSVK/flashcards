@@ -9,7 +9,6 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import info from "../../../info";
 import { Plus } from "lucide-react";
 
 export default function Dashboard() {
@@ -20,7 +19,7 @@ export default function Dashboard() {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `${info}/dashboard`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/dashboard`,
         { sets: true },
         {
           headers: { Authorization: `Bearer ${token}` },

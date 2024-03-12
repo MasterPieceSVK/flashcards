@@ -1,10 +1,8 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
@@ -13,12 +11,9 @@ import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import { Input } from "./input";
 import { useMutation } from "@tanstack/react-query";
-import info from "../../../info";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 
 export default function EmailForm() {
-  const router = useRouter();
   const formSchema = z.object({
     email: z.string().email(),
 
@@ -36,7 +31,7 @@ export default function EmailForm() {
     mutationFn: async (obj) => {
       const token = localStorage.getItem("token");
       return axios.put(
-        `${info}/account/change-email`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/account/change-email`,
         { newEmail: obj.email, actualPassword: obj.password },
         {
           headers: {

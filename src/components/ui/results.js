@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Button } from "./button";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import info from "../../../info";
-import Link from "next/link";
 
 export default function Result({ right, wrong, setId }) {
   const [saved, setSaved] = useState(false);
@@ -11,7 +9,7 @@ export default function Result({ right, wrong, setId }) {
   const saveMutation = useMutation({
     mutationFn: async (newSave) => {
       return axios.post(
-        `${info}/save-result`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/save-result`,
         {
           right: newSave.right,
           wrong: newSave.wrong,

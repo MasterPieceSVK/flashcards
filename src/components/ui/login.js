@@ -1,14 +1,6 @@
 // "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -16,7 +8,6 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +16,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import info from "../../../info";
 require("dotenv").config();
 
 export default function Login() {
@@ -43,7 +33,7 @@ export default function Login() {
   const router = useRouter();
   const loginMutation = useMutation({
     mutationFn: async (user) => {
-      return axios.post(`${info}/login`, user);
+      return axios.post(`${process.env.NEXT_PUBLIC_BASEURL}/login`, user);
     },
     onSuccess: (data) => {
       localStorage.setItem("token", data.data.token);

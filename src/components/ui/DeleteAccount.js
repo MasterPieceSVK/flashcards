@@ -13,7 +13,6 @@ import { Button } from "./button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,6 @@ import { useForm } from "react-hook-form";
 import { Input } from "./input";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import info from "../../../info";
 import { useRouter } from "next/navigation";
 export default function DeleteAccount() {
   const router = useRouter();
@@ -42,14 +40,17 @@ export default function DeleteAccount() {
   const deleteMutation = useMutation({
     mutationFn: async (obj) => {
       const token = localStorage.getItem("token");
-      return axios.delete(`${info}/account/delete-account`, {
-        data: {
-          actualPassword: obj.password,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      return axios.delete(
+        `${process.env.NEXT_PUBLIC_BASEURL}/account/delete-account`,
+        {
+          data: {
+            actualPassword: obj.password,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
     },
     onSuccess: () => {
       localStorage.setItem("token", "");
@@ -121,13 +122,6 @@ export default function DeleteAccount() {
                     )}
                   />
                   <div className="flex justify-center">
-                    {/* <Button
-                          className="bg-green-500 text-white hover:bg-green-800 hover:text-gray-300"
-                          disabled={changeUsernameMutation.isPending}
-                          type="submit"
-                        >
-                          {changeUsernameMutation.isPending ? "Loading" : "Change"}
-                        </Button> */}
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <Button variant="destructive" type="submit">

@@ -13,7 +13,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import { Input } from "./input";
 import { useMutation } from "@tanstack/react-query";
-import info from "../../../info";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -35,7 +34,7 @@ export default function PasswordForm() {
     mutationFn: async (obj) => {
       const token = localStorage.getItem("token");
       return axios.put(
-        `${info}/account/change-password`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/account/change-password`,
         { newPassword: obj.newPassword, oldPassword: obj.oldPassword },
         {
           headers: {

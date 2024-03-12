@@ -2,21 +2,18 @@
 import Nav from "@/components/ui/nav";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import info from "../../../../info";
 import UserInfo from "@/components/ui/UserInfo";
 
 export default function UserPage({ params }) {
   const [user, setUser] = useState("");
   const [userInfo, setUserInfo] = useState();
-  const router = useRouter();
   const [authenticated, setAuthenticated] = useState(true);
   const authMutation = useMutation({
     mutationFn: async (auth) => {
       const token = localStorage.getItem("token");
       return axios.post(
-        `${info}/users/${auth}`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/users/${auth}`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -40,7 +37,7 @@ export default function UserPage({ params }) {
       const token = localStorage.getItem("token");
 
       return axios.post(
-        `${info}/userInfo`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/userInfo`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },

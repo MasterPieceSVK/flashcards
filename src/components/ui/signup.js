@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -14,21 +13,10 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import info from "../../../info";
 
 export default function SignUp() {
   const formSchema = z.object({
@@ -49,7 +37,7 @@ export default function SignUp() {
   const signUpMutation = useMutation({
     mutationFn: async (newUser) => {
       console.log(form.formState);
-      return axios.post(`${info}/signup`, newUser);
+      return axios.post(`${process.env.NEXT_PUBLIC_BASEURL}/signup`, newUser);
     },
     onSuccess: (data) => {
       console.log(data);

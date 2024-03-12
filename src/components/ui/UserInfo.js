@@ -1,6 +1,3 @@
-import { DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
-import { Button } from "./button";
-import { Dialog } from "./dialog";
 import EditAccount from "./EditAccount";
 
 export default function UserInfo({ info }) {

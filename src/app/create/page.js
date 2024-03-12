@@ -19,25 +19,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Toaster } from "@/components/ui/sonner";
-import { Label } from "@/components/ui/label";
+
 import { toast } from "sonner";
-import info from "../../../info";
 
 export default function Create() {
-  console.log("info + " + info);
   const [questionCount, setQuestionCount] = useState(1);
   const [user, setUser] = useState("");
   const router = useRouter();
   const [checked, setChecked] = useState(true);
-  // Define a function to generate the form schema dynamically
   function generateFormSchema(questionCount) {
-    // Initialize the form schema with the setName field
     let formSchema = {
       setName: z.string().max(25),
     };
 
-    // Add question and answer fields for each question
     for (let i = 0; i < questionCount; i++) {
       formSchema = {
         ...formSchema,
@@ -49,10 +43,8 @@ export default function Create() {
     return z.object(formSchema);
   }
 
-  // Use the generateFormSchema function to create the form schema
   const formSchema = generateFormSchema(questionCount);
 
-  // Update the useForm call to use the dynamic form schema
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,7 +59,7 @@ export default function Create() {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `${info}/dashboard`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/dashboard`,
         { sets: false },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -94,7 +86,7 @@ export default function Create() {
   const createSetMutation = useMutation({
     mutationFn: async (set) => {
       return axios.post(
-        `${info}/sets`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/sets`,
         { set: set },
         {
           headers: { Authorization: `Bearer ${set.token}` },
@@ -112,7 +104,6 @@ export default function Create() {
   });
 
   function onSubmit(data) {
-    // Initialize the new object
     let new_object = {
       token: localStorage.getItem("token"),
       setName: data["setName"],
@@ -122,16 +113,13 @@ export default function Create() {
 
     // Iterate over the data
     for (let i = 0; i < 4; i++) {
-      // assuming there are 4 pairs of questions and answers
       let questionKey = "question" + i;
       let answerKey = "answer" + i;
       if (questionKey in data && answerKey in data) {
-        // Create a new object for each question-answer pair
         let qa_pair = {
           question: data[questionKey],
           answer: data[answerKey],
         };
-        // Append the qa_pair object to the "questionAndAnswers" array
         new_object["questionsAndAnswers"].push(qa_pair);
       }
     }

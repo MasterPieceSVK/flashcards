@@ -1,10 +1,8 @@
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { z } from "zod";
@@ -13,7 +11,6 @@ import { useForm } from "react-hook-form";
 import { Button } from "./button";
 import { Input } from "./input";
 import { useMutation } from "@tanstack/react-query";
-import info from "../../../info";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
@@ -35,7 +32,7 @@ export default function UsernameForm() {
     mutationFn: async (obj) => {
       const token = localStorage.getItem("token");
       return axios.put(
-        `${info}/account/change-username`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/account/change-username`,
         { newUsername: obj.username, password: obj.password },
         {
           headers: {

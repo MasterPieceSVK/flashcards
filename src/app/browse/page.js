@@ -4,7 +4,6 @@ import Nav from "@/components/ui/nav";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import info from "../../../info";
 import InitNav from "@/components/ui/initnav";
 import BrowseComponent from "@/components/ui/BrowseComponent";
 
@@ -15,7 +14,7 @@ export default function Page() {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `${info}/dashboard`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/dashboard`,
         { sets: false },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -39,7 +38,7 @@ export default function Page() {
   const getPublicSets = useQuery({
     queryKey: ["sets"],
     queryFn: async () => {
-      return axios.get(`${info}/getPublicSets`);
+      return axios.get(`${process.env.NEXT_PUBLIC_BASEURL}/getPublicSets`);
     },
     onSuccess: (data) => {
       console.log(data);

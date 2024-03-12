@@ -3,11 +3,10 @@ import QuestionCard from "@/components/ui/QuestionCard";
 import { Button } from "@/components/ui/button";
 import Nav from "@/components/ui/nav";
 import NoaccessIcon from "@/components/ui/noacess";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import info from "../../../../info";
 import SetContent from "@/components/ui/setContent";
 import Play from "@/components/ui/play";
 import PlayIcon from "@/components/ui/PlayIcon";
@@ -32,7 +31,7 @@ export default function Sets({ params }) {
   const authMutation = useMutation({
     mutationFn: async (token) => {
       return axios.post(
-        `${info}/dashboard`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/dashboard`,
         { sets: false },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -40,7 +39,6 @@ export default function Sets({ params }) {
       );
     },
     onSuccess: (data) => {
-      // console.log(data.data.username);
       setUser(data.data.username);
       setAuth(true);
     },
@@ -51,21 +49,15 @@ export default function Sets({ params }) {
   let token = "";
   useEffect(() => {
     token = localStorage.getItem("token");
-    // console.log(token);
     authMutation.mutate(token);
   }, []);
 
   const qaMutation = useMutation({
     mutationFn: async (authToken) => {
-      console.log(qaMutation.isPending);
-      console.log(qaMutation.isIdle);
-      console.log(qaMutation.isError);
-      console.log(qaMutation.isSuccess);
-
       const setId = Number(params.setId);
       if (Number.isInteger(setId)) {
         return axios.post(
-          `${info}/qa/${setId}`,
+          `${process.env.NEXT_PUBLIC_BASEURL}/qa/${setId}`,
           {},
           { headers: { Authorization: `Bearer ${authToken}` } }
         );
@@ -75,17 +67,10 @@ export default function Sets({ params }) {
     },
     onSuccess: (data) => {
       setError(false);
-      console.log(qaMutation.isPending);
-      console.log(qaMutation.isIdle);
-      console.log(qaMutation.isError);
-      console.log(qaMutation.isSuccess);
+
       if (data.data == "") {
-        // console.log("succes printing data 0 ");
-        // console.log(data);
         setGrabbedData(false);
       } else {
-        // console.log("succes printing data 1 ");
-        // console.log(data);
         setGrabbedData(data.data);
         setLiked(data.data.liked);
       }
@@ -95,10 +80,6 @@ export default function Sets({ params }) {
       console.log(e);
     },
     onSettled: () => {
-      console.log(qaMutation.isPending);
-      console.log(qaMutation.isIdle);
-      console.log(qaMutation.isError);
-      console.log(qaMutation.isSuccess);
       setSettled(true);
     },
   });
@@ -117,7 +98,7 @@ export default function Sets({ params }) {
   const likeMutation = useMutation({
     mutationFn: async (newLike) => {
       return axios.post(
-        `${info}/like`,
+        `${process.env.NEXT_PUBLIC_BASEURL}/like`,
         { setId: newLike.setId, like: newLike.like },
         { headers: { Authorization: `Bearer ${newLike.token}` } }
       );
@@ -167,7 +148,7 @@ export default function Sets({ params }) {
     mutationFn: async (setId) => {
       const token = localStorage.getItem("token");
 
-      return axios.delete(`${info}/sets`, {
+      return axios.delete(`${process.env.NEXT_PUBLIC_BASEURL}/sets`, {
         params: { setId },
         headers: { Authorization: `Bearer ${token}` },
       });
