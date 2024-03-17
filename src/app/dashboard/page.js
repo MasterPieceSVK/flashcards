@@ -42,7 +42,6 @@ export default function Dashboard() {
   });
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log(token);
     authMutation.mutate(token);
   }, []);
 
