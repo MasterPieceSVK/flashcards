@@ -1,9 +1,12 @@
+This is an flashcards PWA that can help you study more efficiently. The backend to this project can be found [here](https://github.com/MasterPieceSVK/flashcards_backend) 
+
+
 ## .env.local
 
 The env.local file in the root directory with the backend base url
 
 ```bash
-NEXT_PUBLIC_BASEURL=https://flashcards-backend-hl8y.onrender.com
+NEXT_PUBLIC_BASEURL=http://localhost:5000
 ```
 
 ## Getting Started
